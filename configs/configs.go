@@ -62,6 +62,15 @@ type Config struct {
 	Language struct {
 		Local string `toml:"local"`
 	} `toml:"language"`
+	// 支持elaticsearch 日志搜索服务
+	Elastic struct {
+		Host string `toml:"host"`
+		Port string `toml:"port"`
+	} `toml:"elastic"`
+
+	// 支持jager 链路追踪
+	Jager struct {
+	} `toml:"jager"`
 }
 
 var (

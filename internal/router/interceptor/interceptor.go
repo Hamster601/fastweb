@@ -13,6 +13,7 @@ import (
 
 var _ Interceptor = (*interceptor)(nil)
 
+// Interceptor 请求拦截器
 type Interceptor interface {
 	// CheckLogin 验证是否登录
 	CheckLogin(ctx core.Context) (info proposal.SessionUserInfo, err core.BusinessError)

@@ -1,7 +1,8 @@
 package router
 
 import (
-	"github.com/Hamster601/fastweb/configs"
+	"go.uber.org/zap"
+
 	"github.com/Hamster601/fastweb/internal/alert"
 	"github.com/Hamster601/fastweb/internal/metrics"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
@@ -10,9 +11,6 @@ import (
 	"github.com/Hamster601/fastweb/internal/repository/redis"
 	"github.com/Hamster601/fastweb/internal/router/interceptor"
 	"github.com/Hamster601/fastweb/pkg/errors"
-	"github.com/Hamster601/fastweb/pkg/file"
-
-	"go.uber.org/zap"
 )
 
 type resource struct {
@@ -39,38 +37,38 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	r := new(resource)
 	r.logger = logger
 
-	openBrowserUri := configs.ProjectDomain + configs.ProjectPort
+	//openBrowserUri := configs.ProjectDomain + configs.ProjectPort
+	//
+	//_, ok := file.IsExists(configs.ProjectInstallMark)
+	//if !ok { // 未安装
+	//	openBrowserUri += "/install"
+	//} else { // 已安装
 
-	_, ok := file.IsExists(configs.ProjectInstallMark)
-	if !ok { // 未安装
-		openBrowserUri += "/install"
-	} else { // 已安装
-
-		// 初始化 DB
-		dbRepo, err := mysql.New()
-		if err != nil {
-			logger.Fatal("new db err", zap.Error(err))
-		}
-		r.db = dbRepo
-
-		// 初始化 Cache
-		cacheRepo, err := redis.New()
-		if err != nil {
-			logger.Fatal("new cache err", zap.Error(err))
-		}
-		r.cache = cacheRepo
-
-		// 初始化 CRON Server
-		cronServer, err := cron.New(cronLogger, dbRepo, cacheRepo)
-		if err != nil {
-			logger.Fatal("new cron err", zap.Error(err))
-		}
-		cronServer.Start()
-		r.cronServer = cronServer
+	// 初始化 DB
+	dbRepo, err := mysql.New()
+	if err != nil {
+		logger.Fatal("new db err", zap.Error(err))
 	}
+	r.db = dbRepo
+
+	// 初始化 Cache
+	cacheRepo, err := redis.New()
+	if err != nil {
+		logger.Fatal("new cache err", zap.Error(err))
+	}
+	r.cache = cacheRepo
+
+	// 初始化 CRON Server
+	cronServer, err := cron.New(cronLogger, dbRepo, cacheRepo)
+	if err != nil {
+		logger.Fatal("new cron err", zap.Error(err))
+	}
+	cronServer.Start()
+	r.cronServer = cronServer
+	//}
 
 	mux, err := core.New(logger,
-		core.WithEnableOpenBrowser(openBrowserUri),
+		//core.WithEnableOpenBrowser(openBrowserUri),
 		core.WithEnableCors(),
 		core.WithEnableRate(),
 		core.WithAlertNotify(alert.NotifyHandler(logger)),
@@ -85,13 +83,13 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	r.interceptors = interceptor.New(logger, r.cache, r.db)
 
 	// 设置 Render 路由
-	setRenderRouter(r)
+	//setRenderRouter(r)
 
 	// 设置 API 路由
 	setApiRouter(r)
 
 	// 设置 GraphQL 路由
-	setGraphQLRouter(r)
+	//setGraphQLRouter(r)
 
 	// 设置 Socket 路由
 	setSocketRouter(r)

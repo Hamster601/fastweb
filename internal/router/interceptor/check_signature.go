@@ -8,7 +8,6 @@ import (
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized"
-	"github.com/Hamster601/fastweb/pkg/env"
 	"github.com/Hamster601/fastweb/pkg/errors"
 	"github.com/Hamster601/fastweb/pkg/signature"
 	"github.com/Hamster601/fastweb/pkg/urltable"
@@ -20,9 +19,9 @@ var whiteListPath = map[string]bool{
 
 func (i *interceptor) CheckSignature() core.HandlerFunc {
 	return func(c core.Context) {
-		if !env.Active().IsPro() {
-			return
-		}
+		//if !env.Active().IsPro() { // test env is used
+		//	return
+		//}
 
 		// 签名信息
 		authorization := c.GetHeader(configs.HeaderSignToken)

@@ -7,6 +7,7 @@ import (
 	"github.com/Hamster601/fastweb/internal/render/config"
 	"github.com/Hamster601/fastweb/internal/render/cron"
 	"github.com/Hamster601/fastweb/internal/render/dashboard"
+	generator_handler "github.com/Hamster601/fastweb/internal/render/generator"
 	"github.com/Hamster601/fastweb/internal/render/index"
 	"github.com/Hamster601/fastweb/internal/render/install"
 	"github.com/Hamster601/fastweb/internal/render/tool"

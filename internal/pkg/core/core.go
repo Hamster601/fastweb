@@ -3,13 +3,11 @@ package core
 import (
 	"fmt"
 	swaggerFiles "github.com/swaggo/files"
-	"html/template"
 	"net/http"
 	"net/url"
 	"runtime/debug"
 	"time"
 
-	"github.com/Hamster601/fastweb/assets"
 	"github.com/Hamster601/fastweb/configs"
 	_ "github.com/Hamster601/fastweb/docs"
 	"github.com/Hamster601/fastweb/internal/code"
@@ -250,29 +248,29 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 
 	fmt.Println(color.Blue(_UI))
 
-	mux.engine.StaticFS("assets", http.FS(assets.Bootstrap))
-	mux.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(assets.Templates, "templates/**/*")))
+	//mux.engine.StaticFS("assets", http.FS(assets.Bootstrap))
+	//mux.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(assets.Templates, "templates/**/*")))
 
 	// withoutTracePaths 这些请求，默认不记录日志
-	withoutTracePaths := map[string]bool{
-		"/metrics": true,
-
-		"/debug/pprof/":             true,
-		"/debug/pprof/cmdline":      true,
-		"/debug/pprof/profile":      true,
-		"/debug/pprof/symbol":       true,
-		"/debug/pprof/trace":        true,
-		"/debug/pprof/allocs":       true,
-		"/debug/pprof/block":        true,
-		"/debug/pprof/goroutine":    true,
-		"/debug/pprof/heap":         true,
-		"/debug/pprof/mutex":        true,
-		"/debug/pprof/threadcreate": true,
-
-		"/favicon.ico": true,
-
-		"/system/health": true,
-	}
+	//withoutTracePaths := map[string]bool{
+	//	"/metrics": true,
+	//
+	//	"/debug/pprof/":             true,
+	//	"/debug/pprof/cmdline":      true,
+	//	"/debug/pprof/profile":      true,
+	//	"/debug/pprof/symbol":       true,
+	//	"/debug/pprof/trace":        true,
+	//	"/debug/pprof/allocs":       true,
+	//	"/debug/pprof/block":        true,
+	//	"/debug/pprof/goroutine":    true,
+	//	"/debug/pprof/heap":         true,
+	//	"/debug/pprof/mutex":        true,
+	//	"/debug/pprof/threadcreate": true,
+	//
+	//	"/favicon.ico": true,
+	//
+	//	"/system/health": true,
+	//}
 
 	opt := new(option)
 	for _, f := range options {
@@ -341,8 +339,8 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 		context.init()
 		context.setLogger(logger)
 		context.ableRecordMetrics()
-
-		if !withoutTracePaths[ctx.Request.URL.Path] {
+		logger.Info("get url path ", zap.String("path", fmt.Sprintf("%+v", ctx.Request.URL.Path)), zap.String("method", ctx.Request.Method))
+		if _, ok := WithoutCheckAndLogPath[ctx.Request.URL.Path]; !ok {
 			if traceId := context.GetHeader(trace.Header); traceId != "" {
 				context.setTrace(trace.New(traceId))
 			} else {
@@ -524,11 +522,10 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 	})
 
 	if opt.enableRate {
-		limiter := rate.NewLimiter(rate.Every(time.Second*1), configs.MaxRequestsPerSecond)
+		limiter := rate.NewLimiter(rate.Every(time.Second*1), configs.MaxRequestsPerSecond) // 计时器限流，每秒QPS10000
 		mux.engine.Use(func(ctx *gin.Context) {
 			context := newContext(ctx)
 			defer releaseContext(context)
-
 			if !limiter.Allow() {
 				context.AbortWithError(Error(
 					http.StatusTooManyRequests,
@@ -537,7 +534,6 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 				)
 				return
 			}
-
 			ctx.Next()
 		})
 	}
@@ -545,24 +541,23 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 	mux.engine.NoMethod(wrapHandlers(DisableTraceLog)...)
 	mux.engine.NoRoute(wrapHandlers(DisableTraceLog)...)
 
-	system := mux.Group("/system")
-	{
-		// 健康检查
-		system.GET("/health", func(ctx Context) {
-			resp := &struct {
-				Timestamp   time.Time `json:"timestamp"`
-				Environment string    `json:"environment"`
-				Host        string    `json:"host"`
-				Status      string    `json:"status"`
-			}{
-				Timestamp:   time.Now(),
-				Environment: env.Active().Value(),
-				Host:        ctx.Host(),
-				Status:      "ok",
-			}
-			ctx.Payload(resp)
-		})
-	}
-
+	//system := mux.Group("/system")
+	//{
+	//	// 健康检查
+	//	system.GET("/health", func(ctx Context) {
+	//		resp := &struct {
+	//			Timestamp   time.Time `json:"timestamp"`
+	//			Environment string    `json:"environment"`
+	//			Host        string    `json:"host"`
+	//			Status      string    `json:"status"`
+	//		}{
+	//			Timestamp:   time.Now(),
+	//			Environment: env.Active().Value(),
+	//			Host:        ctx.Host(),
+	//			Status:      "ok",
+	//		}
+	//		ctx.Payload(resp)
+	//	})
+	//}
 	return mux, nil
 }

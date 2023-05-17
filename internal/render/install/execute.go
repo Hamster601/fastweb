@@ -10,7 +10,7 @@ import (
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"github.com/Hamster601/fastweb/internal/proposal/tablesqls"
-
+	"github.com/go-redis/redis/v7"
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
