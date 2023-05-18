@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized"
+	"github.com/Hamster601/fastweb/internal/repository/admin/authorized"
 )
 
 type CreateAuthorizedData struct {

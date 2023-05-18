@@ -42,6 +42,9 @@ type dbRepo struct {
 
 func New() (Repo, error) {
 	cfg := configs.Get().MySQL
+	if cfg.Read.Addr == "" {
+		return nil, errors.New("configs admin config addr is empty")
+	}
 	dbr, err := dbConnect(cfg.Read.User, cfg.Read.Pass, cfg.Read.Addr, cfg.Read.Name)
 	if err != nil {
 		return nil, err

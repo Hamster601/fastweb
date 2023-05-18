@@ -2,9 +2,9 @@ package admin
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/admin_menu"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/menu"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/repository/admin/admin_menu"
+	"github.com/Hamster601/fastweb/internal/repository/admin/menu"
 )
 
 type SearchListMenuData struct {

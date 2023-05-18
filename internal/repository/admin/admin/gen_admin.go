@@ -3,34 +3,33 @@
 //        ANY CHANGES DONE HERE WILL BE LOST             //
 ///////////////////////////////////////////////////////////
 
-package authorized
+package admin
 
 import (
 	"fmt"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
 	"time"
-
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
 
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
-func NewModel() *Authorized {
-	return new(Authorized)
+func NewModel() *Admin {
+	return new(Admin)
 }
 
-func NewQueryBuilder() *authorizedQueryBuilder {
-	return new(authorizedQueryBuilder)
+func NewQueryBuilder() *adminQueryBuilder {
+	return new(adminQueryBuilder)
 }
 
-func (t *Authorized) Create(db *gorm.DB) (id int32, err error) {
+func (t *Admin) Create(db *gorm.DB) (id int32, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}
 	return t.Id, nil
 }
 
-type authorizedQueryBuilder struct {
+type adminQueryBuilder struct {
 	order []string
 	where []struct {
 		prefix string
@@ -40,7 +39,7 @@ type authorizedQueryBuilder struct {
 	offset int
 }
 
-func (qb *authorizedQueryBuilder) buildQuery(db *gorm.DB) *gorm.DB {
+func (qb *adminQueryBuilder) buildQuery(db *gorm.DB) *gorm.DB {
 	ret := db
 	for _, where := range qb.where {
 		ret = ret.Where(where.prefix, where.value)
@@ -52,8 +51,8 @@ func (qb *authorizedQueryBuilder) buildQuery(db *gorm.DB) *gorm.DB {
 	return ret
 }
 
-func (qb *authorizedQueryBuilder) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
-	db = db.Model(&Authorized{})
+func (qb *adminQueryBuilder) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
+	db = db.Model(&Admin{})
 
 	for _, where := range qb.where {
 		db.Where(where.prefix, where.value)
@@ -65,28 +64,28 @@ func (qb *authorizedQueryBuilder) Updates(db *gorm.DB, m map[string]interface{})
 	return nil
 }
 
-func (qb *authorizedQueryBuilder) Delete(db *gorm.DB) (err error) {
+func (qb *adminQueryBuilder) Delete(db *gorm.DB) (err error) {
 	for _, where := range qb.where {
 		db = db.Where(where.prefix, where.value)
 	}
 
-	if err = db.Delete(&Authorized{}).Error; err != nil {
+	if err = db.Delete(&Admin{}).Error; err != nil {
 		return errors.Wrap(err, "delete err")
 	}
 	return nil
 }
 
-func (qb *authorizedQueryBuilder) Count(db *gorm.DB) (int64, error) {
+func (qb *adminQueryBuilder) Count(db *gorm.DB) (int64, error) {
 	var c int64
-	res := qb.buildQuery(db).Model(&Authorized{}).Count(&c)
+	res := qb.buildQuery(db).Model(&Admin{}).Count(&c)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		c = 0
 	}
 	return c, res.Error
 }
 
-func (qb *authorizedQueryBuilder) First(db *gorm.DB) (*Authorized, error) {
-	ret := &Authorized{}
+func (qb *adminQueryBuilder) First(db *gorm.DB) (*Admin, error) {
+	ret := &Admin{}
 	res := qb.buildQuery(db).First(ret)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		ret = nil
@@ -94,7 +93,7 @@ func (qb *authorizedQueryBuilder) First(db *gorm.DB) (*Authorized, error) {
 	return ret, res.Error
 }
 
-func (qb *authorizedQueryBuilder) QueryOne(db *gorm.DB) (*Authorized, error) {
+func (qb *adminQueryBuilder) QueryOne(db *gorm.DB) (*Admin, error) {
 	qb.limit = 1
 	ret, err := qb.QueryAll(db)
 	if len(ret) > 0 {
@@ -103,23 +102,23 @@ func (qb *authorizedQueryBuilder) QueryOne(db *gorm.DB) (*Authorized, error) {
 	return nil, err
 }
 
-func (qb *authorizedQueryBuilder) QueryAll(db *gorm.DB) ([]*Authorized, error) {
-	var ret []*Authorized
+func (qb *adminQueryBuilder) QueryAll(db *gorm.DB) ([]*Admin, error) {
+	var ret []*Admin
 	err := qb.buildQuery(db).Find(&ret).Error
 	return ret, err
 }
 
-func (qb *authorizedQueryBuilder) Limit(limit int) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) Limit(limit int) *adminQueryBuilder {
 	qb.limit = limit
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) Offset(offset int) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) Offset(offset int) *adminQueryBuilder {
 	qb.offset = offset
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereId(p mysql.Predicate, value int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereId(p mysql.Predicate, value int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -130,7 +129,7 @@ func (qb *authorizedQueryBuilder) WhereId(p mysql.Predicate, value int32) *autho
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIdIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIdIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -141,7 +140,7 @@ func (qb *authorizedQueryBuilder) WhereIdIn(value []int32) *authorizedQueryBuild
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIdNotIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIdNotIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -152,7 +151,7 @@ func (qb *authorizedQueryBuilder) WhereIdNotIn(value []int32) *authorizedQueryBu
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderById(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderById(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -162,179 +161,179 @@ func (qb *authorizedQueryBuilder) OrderById(asc bool) *authorizedQueryBuilder {
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessKey(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUsername(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_key", p),
+		fmt.Sprintf("%v %v ?", "username", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessKeyIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUsernameIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_key", "IN"),
+		fmt.Sprintf("%v %v ?", "username", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessKeyNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUsernameNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_key", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "username", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByBusinessKey(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByUsername(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "business_key "+order)
+	qb.order = append(qb.order, "username "+order)
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessSecret(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WherePassword(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_secret", p),
+		fmt.Sprintf("%v %v ?", "password", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessSecretIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WherePasswordIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_secret", "IN"),
+		fmt.Sprintf("%v %v ?", "password", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessSecretNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WherePasswordNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_secret", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "password", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByBusinessSecret(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByPassword(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "business_secret "+order)
+	qb.order = append(qb.order, "password "+order)
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessDeveloper(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereNickname(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_developer", p),
+		fmt.Sprintf("%v %v ?", "nickname", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessDeveloperIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereNicknameIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_developer", "IN"),
+		fmt.Sprintf("%v %v ?", "nickname", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereBusinessDeveloperNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereNicknameNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "business_developer", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "nickname", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByBusinessDeveloper(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByNickname(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "business_developer "+order)
+	qb.order = append(qb.order, "nickname "+order)
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereRemark(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereMobile(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "remark", p),
+		fmt.Sprintf("%v %v ?", "mobile", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereRemarkIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereMobileIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "remark", "IN"),
+		fmt.Sprintf("%v %v ?", "mobile", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereRemarkNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereMobileNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "remark", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "mobile", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByRemark(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByMobile(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "remark "+order)
+	qb.order = append(qb.order, "mobile "+order)
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsUsed(p mysql.Predicate, value int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsUsed(p mysql.Predicate, value int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -345,7 +344,7 @@ func (qb *authorizedQueryBuilder) WhereIsUsed(p mysql.Predicate, value int32) *a
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsUsedIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsUsedIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -356,7 +355,7 @@ func (qb *authorizedQueryBuilder) WhereIsUsedIn(value []int32) *authorizedQueryB
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsUsedNotIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsUsedNotIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -367,7 +366,7 @@ func (qb *authorizedQueryBuilder) WhereIsUsedNotIn(value []int32) *authorizedQue
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByIsUsed(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByIsUsed(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -377,7 +376,7 @@ func (qb *authorizedQueryBuilder) OrderByIsUsed(asc bool) *authorizedQueryBuilde
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsDeleted(p mysql.Predicate, value int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsDeleted(p mysql.Predicate, value int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -388,7 +387,7 @@ func (qb *authorizedQueryBuilder) WhereIsDeleted(p mysql.Predicate, value int32)
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsDeletedIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsDeletedIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -399,7 +398,7 @@ func (qb *authorizedQueryBuilder) WhereIsDeletedIn(value []int32) *authorizedQue
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereIsDeletedNotIn(value []int32) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereIsDeletedNotIn(value []int32) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -410,7 +409,7 @@ func (qb *authorizedQueryBuilder) WhereIsDeletedNotIn(value []int32) *authorized
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByIsDeleted(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByIsDeleted(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -420,7 +419,7 @@ func (qb *authorizedQueryBuilder) OrderByIsDeleted(asc bool) *authorizedQueryBui
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedAt(p mysql.Predicate, value time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedAt(p mysql.Predicate, value time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -431,7 +430,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedAt(p mysql.Predicate, value time.T
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedAtIn(value []time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedAtIn(value []time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -442,7 +441,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedAtIn(value []time.Time) *authorize
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedAtNotIn(value []time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedAtNotIn(value []time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -453,7 +452,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedAtNotIn(value []time.Time) *author
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByCreatedAt(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByCreatedAt(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -463,7 +462,7 @@ func (qb *authorizedQueryBuilder) OrderByCreatedAt(asc bool) *authorizedQueryBui
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedUser(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedUser(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -474,7 +473,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedUser(p mysql.Predicate, value stri
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedUserIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedUserIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -485,7 +484,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedUserIn(value []string) *authorized
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereCreatedUserNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereCreatedUserNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -496,7 +495,7 @@ func (qb *authorizedQueryBuilder) WhereCreatedUserNotIn(value []string) *authori
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByCreatedUser(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByCreatedUser(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -506,7 +505,7 @@ func (qb *authorizedQueryBuilder) OrderByCreatedUser(asc bool) *authorizedQueryB
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedAt(p mysql.Predicate, value time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedAt(p mysql.Predicate, value time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -517,7 +516,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedAt(p mysql.Predicate, value time.T
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedAtIn(value []time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedAtIn(value []time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -528,7 +527,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedAtIn(value []time.Time) *authorize
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedAtNotIn(value []time.Time) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedAtNotIn(value []time.Time) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -539,7 +538,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedAtNotIn(value []time.Time) *author
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByUpdatedAt(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByUpdatedAt(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
@@ -549,7 +548,7 @@ func (qb *authorizedQueryBuilder) OrderByUpdatedAt(asc bool) *authorizedQueryBui
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedUser(p mysql.Predicate, value string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedUser(p mysql.Predicate, value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -560,7 +559,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedUser(p mysql.Predicate, value stri
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedUserIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedUserIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -571,7 +570,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedUserIn(value []string) *authorized
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) WhereUpdatedUserNotIn(value []string) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) WhereUpdatedUserNotIn(value []string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -582,7 +581,7 @@ func (qb *authorizedQueryBuilder) WhereUpdatedUserNotIn(value []string) *authori
 	return qb
 }
 
-func (qb *authorizedQueryBuilder) OrderByUpdatedUser(asc bool) *authorizedQueryBuilder {
+func (qb *adminQueryBuilder) OrderByUpdatedUser(asc bool) *adminQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"

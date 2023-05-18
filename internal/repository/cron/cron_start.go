@@ -2,10 +2,10 @@ package cron
 
 import (
 	"fmt"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
 	"math"
 
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/cron_task"
+	"github.com/Hamster601/fastweb/internal/repository/admin/cron_task"
 
 	"go.uber.org/zap"
 )

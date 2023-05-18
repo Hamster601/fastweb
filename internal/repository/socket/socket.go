@@ -1,11 +1,11 @@
 package socket
 
 import (
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"net/http"
 	"time"
 
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
 	"github.com/Hamster601/fastweb/pkg/errors"
 
 	"github.com/gorilla/websocket"

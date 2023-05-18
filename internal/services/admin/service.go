@@ -2,9 +2,9 @@ package admin
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/admin"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
+	"github.com/Hamster601/fastweb/internal/repository/admin/admin"
 )
 
 var _ Service = (*service)(nil)

@@ -3,8 +3,8 @@ package tool
 import (
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"github.com/Hamster601/fastweb/pkg/hash"
 
 	"go.uber.org/zap"
@@ -47,7 +47,7 @@ type Handler interface {
 
 	// SearchMySQL 执行 SQL 语句
 	// @Tags API.tool
-	// @Router /api/tool/data/mysql [post]
+	// @Router /api/tool/data/admin [post]
 	SearchMySQL() core.HandlerFunc
 
 	// SendMessage 发送消息

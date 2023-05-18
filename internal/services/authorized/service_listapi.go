@@ -2,8 +2,8 @@ package authorized
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized_api"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/repository/admin/authorized_api"
 )
 
 type SearchAPIData struct {

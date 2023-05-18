@@ -152,15 +152,15 @@ func (h *handler) Execute() core.HandlerFunc {
 		viper.Set("redis.pass", req.RedisPass)
 		viper.Set("redis.db", req.RedisDb)
 
-		viper.Set("mysql.read.addr", req.MySQLAddr)
-		viper.Set("mysql.read.user", req.MySQLUser)
-		viper.Set("mysql.read.pass", req.MySQLPass)
-		viper.Set("mysql.read.name", req.MySQLName)
+		viper.Set("admin.read.addr", req.MySQLAddr)
+		viper.Set("admin.read.user", req.MySQLUser)
+		viper.Set("admin.read.pass", req.MySQLPass)
+		viper.Set("admin.read.name", req.MySQLName)
 
-		viper.Set("mysql.write.addr", req.MySQLAddr)
-		viper.Set("mysql.write.user", req.MySQLUser)
-		viper.Set("mysql.write.pass", req.MySQLPass)
-		viper.Set("mysql.write.name", req.MySQLName)
+		viper.Set("admin.write.addr", req.MySQLAddr)
+		viper.Set("admin.write.user", req.MySQLUser)
+		viper.Set("admin.write.pass", req.MySQLPass)
+		viper.Set("admin.write.name", req.MySQLName)
 
 		if viper.WriteConfig() != nil {
 			ctx.AbortWithError(core.Error(

@@ -2,8 +2,8 @@ package cron
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/cron_task"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/repository/admin/cron_task"
 )
 
 type SearchData struct {

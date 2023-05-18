@@ -38,7 +38,7 @@ func CreateMenuActionTableDataSql() (sql string) {
 	sql += "(2, 14, 'POST', '/api/tool/cache/search', 'init'),"
 	sql += "(3, 14, 'PATCH', '/api/tool/cache/clear', 'init'),"
 	sql += "(4, 15, 'GET', '/api/tool/data/dbs', 'init'),"
-	sql += "(5, 15, 'POST', '/api/tool/data/mysql', 'init'),"
+	sql += "(5, 15, 'POST', '/api/tool/data/admin', 'init'),"
 	sql += "(6, 15, 'POST', '/api/tool/data/tables', 'init'),"
 	sql += "(7, 2, 'PATCH', '/api/config/email', 'init'),"
 	sql += "(8, 5, 'POST', '/generator/gorm/execute', 'init'),"

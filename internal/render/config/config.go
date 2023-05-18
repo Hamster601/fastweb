@@ -1,15 +1,14 @@
 package config
 
 import (
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"go/token"
 	"log"
 
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
-
 	"github.com/dave/dst"
 	"github.com/dave/dst/decorator"
 	"github.com/spf13/cast"

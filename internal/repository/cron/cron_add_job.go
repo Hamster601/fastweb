@@ -3,7 +3,7 @@ package cron
 import (
 	"fmt"
 
-	"github.com/Hamster601/fastweb/internal/repository/mysql/cron_task"
+	"github.com/Hamster601/fastweb/internal/repository/admin/cron_task"
 
 	"github.com/jakecoffman/cron"
 )

@@ -2,13 +2,9 @@ package handler
 
 import (
 	"context"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"time"
-
-	"github.com/Hamster601/fastweb/internal/graph/generated"
-	"github.com/Hamster601/fastweb/internal/graph/resolvers"
-	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -16,6 +12,9 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/Hamster601/fastweb/internal/graph/generated"
+	"github.com/Hamster601/fastweb/internal/graph/resolvers"
+	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"go.uber.org/zap"
 )
 

@@ -1,6 +1,8 @@
 package pkglog
 
 import (
+	"fmt"
+	"github.com/Hamster601/fastweb/pkg/timeutil"
 	"io"
 	"os"
 	"path/filepath"
@@ -18,6 +20,20 @@ const (
 	// DefaultTimeLayout the default time layout;
 	DefaultTimeLayout = time.RFC3339
 )
+
+var ProjectLogger *zap.Logger
+
+func init() {
+	projectLogger, err := NewJSONLogger(
+		WithDisableConsole(),
+		WithField("domain", fmt.Sprintf("%s[%s]", "", "")),
+		WithTimeLayout(timeutil.CSTLayout),
+		WithFileP("./logs/fastweb.log"))
+	if err != nil {
+		return
+	}
+	ProjectLogger = projectLogger
+}
 
 // Option custom setup config
 type Option func(*option)

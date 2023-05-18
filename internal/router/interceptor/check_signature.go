@@ -7,7 +7,7 @@ import (
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized"
+	"github.com/Hamster601/fastweb/internal/repository/admin/authorized"
 	"github.com/Hamster601/fastweb/pkg/errors"
 	"github.com/Hamster601/fastweb/pkg/signature"
 	"github.com/Hamster601/fastweb/pkg/urltable"

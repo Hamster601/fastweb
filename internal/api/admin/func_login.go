@@ -2,6 +2,7 @@ package admin
 
 import (
 	"encoding/json"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"net/http"
 
 	"github.com/Hamster601/fastweb/configs"
@@ -9,7 +10,6 @@ import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"github.com/Hamster601/fastweb/internal/pkg/password"
 	"github.com/Hamster601/fastweb/internal/proposal"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
 	"github.com/Hamster601/fastweb/internal/services/admin"
 	"github.com/Hamster601/fastweb/pkg/errors"
 )

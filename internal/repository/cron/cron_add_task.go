@@ -3,7 +3,7 @@ package cron
 import (
 	"strings"
 
-	"github.com/Hamster601/fastweb/internal/repository/mysql/cron_task"
+	"github.com/Hamster601/fastweb/internal/repository/admin/cron_task"
 
 	"github.com/spf13/cast"
 )

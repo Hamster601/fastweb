@@ -2074,7 +2074,7 @@ var doc = `{
                 }
             }
         },
-        "/api/tool/data/mysql": {
+        "/api/tool/data/admin": {
             "post": {
                 "security": [
                     {

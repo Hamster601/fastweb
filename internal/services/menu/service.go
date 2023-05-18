@@ -2,10 +2,10 @@ package menu
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/menu"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/menu_action"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
+	"github.com/Hamster601/fastweb/internal/repository/admin/menu"
+	"github.com/Hamster601/fastweb/internal/repository/admin/menu_action"
 )
 
 var _ Service = (*service)(nil)

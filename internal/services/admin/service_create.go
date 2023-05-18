@@ -3,7 +3,8 @@ package admin
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"github.com/Hamster601/fastweb/internal/pkg/password"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/admin"
+	"github.com/Hamster601/fastweb/internal/repository/admin/admin"
+	"github.com/Hamster601/fastweb/pkg/errors"
 )
 
 type CreateAdminData struct {
@@ -14,6 +15,9 @@ type CreateAdminData struct {
 }
 
 func (s *service) Create(ctx core.Context, adminData *CreateAdminData) (id int32, err error) {
+	if adminData == nil {
+		return 0, errors.New("adminData is empty")
+	}
 	model := admin.NewModel()
 	model.Username = adminData.Username
 	model.Password = password.GeneratePassword(adminData.Password)

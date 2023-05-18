@@ -2,6 +2,8 @@ package dashboard
 
 import (
 	"fmt"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"os"
 	"runtime"
 	"strconv"
@@ -10,8 +12,6 @@ import (
 
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
 	"github.com/Hamster601/fastweb/pkg/env"
 
 	"github.com/shirou/gopsutil/cpu"

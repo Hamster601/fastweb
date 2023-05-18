@@ -35,7 +35,7 @@ type Config struct {
 			MaxIdleConn     int           `toml:"maxIdleConn"`
 			ConnMaxLifeTime time.Duration `toml:"connMaxLifeTime"`
 		} `toml:"base"`
-	} `toml:"mysql"`
+	} `toml:"admin"`
 
 	Redis struct {
 		Addr         string `toml:"addr"`

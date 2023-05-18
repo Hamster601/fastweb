@@ -2,8 +2,8 @@ package authorized
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/repository/admin/authorized"
 )
 
 func (s *service) PageListCount(ctx core.Context, searchData *SearchData) (total int64, err error) {

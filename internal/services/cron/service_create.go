@@ -2,7 +2,7 @@ package cron
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/cron_task"
+	"github.com/Hamster601/fastweb/internal/repository/admin/cron_task"
 )
 
 type CreateCronTaskData struct {

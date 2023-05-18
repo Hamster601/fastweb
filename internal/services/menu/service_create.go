@@ -2,7 +2,7 @@ package menu
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/menu"
+	"github.com/Hamster601/fastweb/internal/repository/admin/menu"
 )
 
 type CreateMenuData struct {

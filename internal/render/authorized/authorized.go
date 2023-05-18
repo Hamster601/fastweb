@@ -1,13 +1,12 @@
 package authorized
 
 import (
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"net/http"
 
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
-
 	"go.uber.org/zap"
 )
 

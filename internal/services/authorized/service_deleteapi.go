@@ -3,10 +3,9 @@ package authorized
 import (
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/authorized_api"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
-
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
+	"github.com/Hamster601/fastweb/internal/repository/admin/authorized_api"
 	"gorm.io/gorm"
 )
 

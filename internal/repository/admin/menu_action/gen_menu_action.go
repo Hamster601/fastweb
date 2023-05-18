@@ -7,9 +7,8 @@ package menu_action
 
 import (
 	"fmt"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
 	"time"
-
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
 
 	"github.com/pkg/errors"
 	"gorm.io/gorm"

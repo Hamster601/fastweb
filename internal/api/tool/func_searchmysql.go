@@ -78,7 +78,7 @@ var filterListKeyword = []string{
 // @Param sql formData string true "SQL 语句"
 // @Success 200 {object} searchMySQLResponse
 // @Failure 400 {object} code.Failure
-// @Router /api/tool/data/mysql [post]
+// @Router /api/tool/data/admin [post]
 // @Security LoginToken
 func (h *handler) SearchMySQL() core.HandlerFunc {
 	return func(c core.Context) {

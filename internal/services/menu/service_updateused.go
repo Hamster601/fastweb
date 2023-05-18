@@ -2,8 +2,8 @@ package menu
 
 import (
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/mysql"
-	"github.com/Hamster601/fastweb/internal/repository/mysql/menu"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/repository/admin/menu"
 )
 
 func (s *service) UpdateUsed(ctx core.Context, id int32, used int32) (err error) {

@@ -1,13 +1,13 @@
 package admin
 
 import (
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"net/http"
 
 	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/code"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
 	"github.com/Hamster601/fastweb/internal/pkg/password"
-	"github.com/Hamster601/fastweb/internal/repository/redis"
 )
 
 type offlineRequest struct {
