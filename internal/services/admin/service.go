@@ -5,6 +5,7 @@ import (
 	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
 	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"github.com/Hamster601/fastweb/internal/repository/admin/admin"
+	"github.com/gin-gonic/gin"
 )
 
 var _ Service = (*service)(nil)
@@ -21,11 +22,12 @@ type Service interface {
 	ResetPassword(ctx core.Context, id int32) (err error)
 	ModifyPassword(ctx core.Context, id int32, newPassword string) (err error)
 	ModifyPersonalInfo(ctx core.Context, id int32, modifyData *ModifyData) (err error)
+	DetailNew(ctx gin.Context, searchOneData *SearchOneData) (info *admin.Admin, err error)
 
-	CreateMenu(ctx core.Context, menuData *CreateMenuData) (err error)
-	ListMenu(ctx core.Context, searchData *SearchListMenuData) (menuData []ListMenuData, err error)
-	MyMenu(ctx core.Context, searchData *SearchMyMenuData) (menuData []ListMyMenuData, err error)
-	MyAction(ctx core.Context, searchData *SearchMyActionData) (actionData []MyActionData, err error)
+	//CreateMenu(ctx core.Context, menuData *CreateMenuData) (err error)
+	//ListMenu(ctx core.Context, searchData *SearchListMenuData) (menuData []ListMenuData, err error)
+	//MyMenu(ctx core.Context, searchData *SearchMyMenuData) (menuData []ListMyMenuData, err error)
+	//MyAction(ctx core.Context, searchData *SearchMyActionData) (actionData []MyActionData, err error)
 }
 
 type service struct {
@@ -33,10 +35,10 @@ type service struct {
 	cache redis.Repo
 }
 
-func New(db mysql.Repo, cache redis.Repo) Service {
+func New() Service {
 	return &service{
-		db:    db,
-		cache: cache,
+		db:    *mysql.MysqlRepo,
+		cache: *redis.RedisClient,
 	}
 }
 

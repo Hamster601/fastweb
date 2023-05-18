@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"fmt"
+	"github.com/Hamster601/fastweb/pkg/pkglog"
 	"time"
 
 	"github.com/Hamster601/fastweb/configs"
@@ -33,6 +34,16 @@ type Repo interface {
 	GetDbW() *gorm.DB
 	DbRClose() error
 	DbWClose() error
+}
+
+var MysqlRepo *Repo
+
+func init() {
+	mysqlRepo, err := New()
+	if err != nil {
+		pkglog.ProjectLogger.Fatal("init mysql client failed")
+	}
+	MysqlRepo = &mysqlRepo
 }
 
 type dbRepo struct {

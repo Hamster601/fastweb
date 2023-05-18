@@ -30,6 +30,8 @@ type BusinessError interface {
 
 	// IsAlert 是否开启告警通知
 	IsAlert() bool
+
+	Error() string
 }
 
 type businessError struct {
@@ -79,4 +81,8 @@ func (e *businessError) StackError() error {
 
 func (e *businessError) IsAlert() bool {
 	return e.isAlert
+}
+
+func (e *businessError) Error() string {
+	return e.message
 }

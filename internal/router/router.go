@@ -5,22 +5,19 @@ import (
 	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"go.uber.org/zap"
 
-	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/repository/cron"
-	"github.com/Hamster601/fastweb/internal/router/interceptor"
 	"github.com/Hamster601/fastweb/pkg/errors"
 	"github.com/gin-gonic/gin"
 )
 
-type resource struct {
-	mux core.Mux
-
-	logger       *zap.Logger
-	db           mysql.Repo
-	cache        redis.Repo
-	interceptors interceptor.Interceptor
-	cronServer   cron.Server
-}
+//type resource struct {
+//	mux core.Mux
+//
+//	logger       *zap.Logger
+//	db           mysql.Repo
+//	cache        redis.Repo
+//	interceptors interceptor.Interceptor
+//	cronServer   cron.Server
+//}
 
 type Server struct {
 	//Mux        core.Mux

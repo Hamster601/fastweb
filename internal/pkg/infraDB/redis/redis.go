@@ -1,6 +1,8 @@
 package redis
 
 import (
+	"github.com/Hamster601/fastweb/pkg/pkglog"
+	"go.uber.org/zap"
 	"strings"
 	"time"
 
@@ -42,6 +44,16 @@ type Repo interface {
 
 type cacheRepo struct {
 	client *redis.Client
+}
+
+var RedisClient *Repo
+
+func init() {
+	repo, err := New()
+	if err != nil {
+		pkglog.ProjectLogger.Fatal("init redis client failed", zap.Field{Key: "initRedis", String: err.Error()})
+	}
+	RedisClient = &repo
 }
 
 func New() (Repo, error) {

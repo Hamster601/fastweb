@@ -1,12 +1,11 @@
 package admin
 
 import (
-	"github.com/Hamster601/fastweb/configs"
 	"github.com/Hamster601/fastweb/internal/pkg/core"
-	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
 	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"github.com/Hamster601/fastweb/internal/services/admin"
 	"github.com/Hamster601/fastweb/pkg/hash"
+	"github.com/gin-gonic/gin"
 
 	"go.uber.org/zap"
 )
@@ -20,6 +19,8 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/login [post]
 	Login() core.HandlerFunc
+
+	LoginNew(ctx *gin.Context)
 
 	// Logout 管理员登出
 	// @Tags API.admin
@@ -89,12 +90,12 @@ type handler struct {
 	adminService admin.Service
 }
 
-func New(logger *zap.Logger, db mysql.Repo, cache redis.Repo) Handler {
+func New(logger *zap.Logger) Handler {
 	return &handler{
-		logger:       logger,
-		cache:        cache,
-		hashids:      hash.New(configs.Get().HashIds.Secret, configs.Get().HashIds.Length),
-		adminService: admin.New(db, cache),
+		logger: logger,
+		cache:  *redis.RedisClient,
+		//hashids:      hash.New(configs.Get().HashIds.Secret, configs.Get().HashIds.Length),
+		adminService: admin.New(),
 	}
 }
 
