@@ -1,8 +1,6 @@
 package router
 
 import (
-	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
-	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"go.uber.org/zap"
 
 	"github.com/Hamster601/fastweb/pkg/errors"
@@ -21,8 +19,8 @@ import (
 
 type Server struct {
 	//Mux        core.Mux
-	Db    mysql.Repo
-	Cache redis.Repo
+	//Db    mysql.Repo
+	//Cache redis.Repo
 	//CronServer cron.Server
 	GinEngine *gin.Engine
 }
@@ -43,16 +41,16 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	////} else { // 已安装
 
 	////// 初始化 DB
-	dbRepo, err := mysql.New()
-	if err != nil {
-		logger.Fatal("new db err", zap.Error(err))
-	}
-	//r.db = dbRepo
-	// 初始化 Cache
-	cacheRepo, err := redis.New()
-	if err != nil {
-		logger.Fatal("new cache err", zap.Error(err))
-	}
+	//dbRepo, err := mysql.New()
+	//if err != nil {
+	//	logger.Fatal("new db err", zap.Error(err))
+	//}
+	////r.db = dbRepo
+	//// 初始化 Cache
+	//cacheRepo, err := redis.New()
+	//if err != nil {
+	//	logger.Fatal("new cache err", zap.Error(err))
+	//}
 	//r.cache = cacheRepo
 
 	// 初始化 CRON Server
@@ -72,9 +70,9 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	//	core.WithRecordMetrics(metrics.RecordHandler(logger)),
 	//)
 
-	if err != nil {
-		panic(err)
-	}
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	//r.mux = mux
 	//r.interceptors = interceptor.New(logger, r.cache, r.db)
@@ -90,8 +88,8 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 
 	s := new(Server)
 	//s.Mux = mux
-	s.Db = dbRepo
-	s.Cache = cacheRepo
+	//s.Db = dbRepo
+	//s.Cache = cacheRepo
 	//s.CronServer = cronServer
 	s.GinEngine = defaultEngine
 

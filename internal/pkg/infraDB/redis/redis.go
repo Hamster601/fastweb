@@ -46,17 +46,19 @@ type cacheRepo struct {
 	client *redis.Client
 }
 
-var RedisClient *Repo
+//var RedisClient *Repo
+var Instance *cacheRepo
 
 func init() {
 	repo, err := New()
 	if err != nil {
 		pkglog.ProjectLogger.Fatal("init redis client failed", zap.Field{Key: "initRedis", String: err.Error()})
 	}
-	RedisClient = &repo
+	Instance = repo
+	//RedisClient = &repo
 }
 
-func New() (Repo, error) {
+func New() (*cacheRepo, error) {
 	client, err := redisConnect()
 	if err != nil {
 		return nil, err

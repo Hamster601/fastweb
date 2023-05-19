@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"context"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/mysql"
+	"github.com/Hamster601/fastweb/internal/pkg/infraDB/redis"
 	"net/http"
 	"time"
 
@@ -13,11 +15,9 @@ import (
 )
 
 func Execute() {
-	// 初始化 access pkglog
 
 	defer func() {
 		_ = pkglog.ProjectLogger.Sync()
-
 	}()
 
 	// 初始化 HTTP 服务
@@ -47,36 +47,13 @@ func Execute() {
 				pkglog.ProjectLogger.Error("server shutdown err", zap.Error(err))
 			}
 		},
-
 		// 关闭 db
 		func() {
-			if s.Db != nil {
-				if err := s.Db.DbWClose(); err != nil {
-					pkglog.ProjectLogger.Error("dbw close err", zap.Error(err))
-				}
-
-				if err := s.Db.DbRClose(); err != nil {
-					pkglog.ProjectLogger.Error("dbr close err", zap.Error(err))
-				}
-			}
+			mysql.Close()
 		},
-
-		// 关闭 cache
 		func() {
-			if s.Cache != nil {
-				if err := s.Cache.Close(); err != nil {
-					pkglog.ProjectLogger.Error("cache close err", zap.Error(err))
-				}
-			}
+			redis.Instance.Close()
 		},
-
-		// 关闭 cron Server
-		//func() {
-		//	if s.CronServer != nil {
-		//		s.CronServer.Stop()
-		//	}
-		//},
-
 		// 关闭协程
 	)
 }

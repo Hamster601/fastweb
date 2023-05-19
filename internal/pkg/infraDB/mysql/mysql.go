@@ -3,6 +3,7 @@ package mysql
 import (
 	"fmt"
 	"github.com/Hamster601/fastweb/pkg/pkglog"
+	"gorm.io/gorm/logger"
 	"time"
 
 	"github.com/Hamster601/fastweb/configs"
@@ -30,36 +31,40 @@ var _ Repo = (*dbRepo)(nil)
 
 type Repo interface {
 	i()
-	GetDbR() *gorm.DB
+	GetDB() *gorm.DB
 	GetDbW() *gorm.DB
 	DbRClose() error
 	DbWClose() error
 }
 
-var MysqlRepo *Repo
+func Close() {
+	Instance.DbRClose()
+	Instance.DbWClose()
+}
+
+var Instance *dbRepo
 
 func init() {
 	mysqlRepo, err := New()
 	if err != nil {
 		pkglog.ProjectLogger.Fatal("init mysql client failed")
 	}
-	MysqlRepo = &mysqlRepo
+	Instance = mysqlRepo
 }
 
 type dbRepo struct {
-	DbR *gorm.DB
-	DbW *gorm.DB
+	DB *gorm.DB
 }
 
-func New() (Repo, error) {
+func New() (*dbRepo, error) {
 	cfg := configs.Get().MySQL
 	if cfg.Read.Addr == "" {
 		return nil, errors.New("configs admin config addr is empty")
 	}
-	dbr, err := dbConnect(cfg.Read.User, cfg.Read.Pass, cfg.Read.Addr, cfg.Read.Name)
-	if err != nil {
-		return nil, err
-	}
+	//dbr, err := dbConnect(cfg.Read.User, cfg.Read.Pass, cfg.Read.Addr, cfg.Read.Name)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	dbw, err := dbConnect(cfg.Write.User, cfg.Write.Pass, cfg.Write.Addr, cfg.Write.Name)
 	if err != nil {
@@ -67,23 +72,22 @@ func New() (Repo, error) {
 	}
 
 	return &dbRepo{
-		DbR: dbr,
-		DbW: dbw,
+		DB: dbw,
 	}, nil
 }
 
 func (d *dbRepo) i() {}
 
-func (d *dbRepo) GetDbR() *gorm.DB {
-	return d.DbR
+func (d *dbRepo) GetDB() *gorm.DB {
+	return d.DB
 }
 
 func (d *dbRepo) GetDbW() *gorm.DB {
-	return d.DbW
+	return d.DB
 }
 
 func (d *dbRepo) DbRClose() error {
-	sqlDB, err := d.DbR.DB()
+	sqlDB, err := d.DB.DB()
 	if err != nil {
 		return err
 	}
@@ -91,7 +95,7 @@ func (d *dbRepo) DbRClose() error {
 }
 
 func (d *dbRepo) DbWClose() error {
-	sqlDB, err := d.DbW.DB()
+	sqlDB, err := d.DB.DB()
 	if err != nil {
 		return err
 	}
@@ -111,7 +115,7 @@ func dbConnect(user, pass, addr, dbName string) (*gorm.DB, error) {
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
-		//Logger: logger.Default.LogMode(logger.Info), // 日志配置
+		Logger: logger.Default.LogMode(logger.Info), // 日志配置
 	})
 
 	if err != nil {
@@ -137,7 +141,7 @@ func dbConnect(user, pass, addr, dbName string) (*gorm.DB, error) {
 	sqlDB.SetConnMaxLifetime(time.Minute * cfg.ConnMaxLifeTime)
 
 	// 使用插件
-	db.Use(&TracePlugin{})
+	//db.Use(&TracePlugin{})
 
 	return db, nil
 }
