@@ -10,6 +10,7 @@ type Admin struct {
 	Password    string    // 密码
 	Nickname    string    // 昵称
 	Mobile      string    // 手机号
+	Email       string    // 邮箱
 	IsUsed      int32     // 是否启用 1:是  -1:否
 	IsDeleted   int32     // 是否删除 1:是  -1:否
 	CreatedAt   time.Time `gorm:"time"` // 创建时间

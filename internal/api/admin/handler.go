@@ -21,6 +21,11 @@ type Handler interface {
 
 	LoginNew(ctx *gin.Context)
 
+	// CreateAdmin 创建管理员
+	// @Tags API.admin
+	// @Router /api/admin/create [post]
+	CreateAdmin(ctx *gin.Context)
+
 	// Logout 管理员登出
 	// @Tags API.admin
 	// @Router /api/admin/logout [post]

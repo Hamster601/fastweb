@@ -9,6 +9,7 @@ import (
 
 type Service interface {
 	DetailNew(ctx gin.Context, searchOneData *SearchOneData) (info *admin.Admin, err error)
+	CreateAdmin(ctx gin.Context, model *admin.Admin) (info *admin.Admin, err error)
 }
 
 type service struct {

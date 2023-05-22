@@ -32,5 +32,5 @@ func initAPIRouter(eg *gin.Engine) {
 	v1api := eg.Group("/v1/api")
 	adminHandler := admin.New(pkglog.ProjectLogger)
 	v1api.POST("/login", adminHandler.LoginNew)
-
+	v1api.POST("/admin/create", adminHandler.CreateAdmin)
 }

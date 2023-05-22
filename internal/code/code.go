@@ -15,6 +15,13 @@ type Failure struct {
 	Message string `json:"message"` // 描述信息
 }
 
+func New(code int, message string) *Failure {
+	return &Failure{
+		Code:    code,
+		Message: message,
+	}
+}
+
 const (
 	ServerError        = 10101
 	TooManyRequests    = 10102
@@ -89,4 +96,11 @@ func Text(code int) string {
 	}
 
 	return zhCNText[code]
+}
+
+func (b *Failure) Error() string {
+	if b == nil {
+		return "未定义错误信息"
+	}
+	return b.Message
 }
