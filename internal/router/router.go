@@ -21,7 +21,7 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 		return nil, errors.New("logger required")
 	}
 	defaultEngine := gin.Default()
-	defaultEngine.Use(gin.Recovery(), middlewares.Validator())
+	defaultEngine.Use(middlewares.LimitRate(), middlewares.Validator(), gin.Recovery())
 	initAPIRouter(defaultEngine)
 	s := new(Server)
 	s.GinEngine = defaultEngine
