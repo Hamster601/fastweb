@@ -21,11 +21,7 @@ const (
 	DefaultTimeLayout = time.RFC3339
 )
 
-type PkgLogger struct {
-	*zap.Logger
-}
-
-var ProjectLogger *PkgLogger
+var ProjectLogger *zap.Logger
 
 func init() {
 	projectLogger, err := NewJSONLogger(
@@ -36,9 +32,7 @@ func init() {
 	if err != nil {
 		return
 	}
-	ProjectLogger = &PkgLogger{
-		projectLogger,
-	}
+	ProjectLogger = projectLogger
 }
 
 // Option custom setup config

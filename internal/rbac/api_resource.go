@@ -1,9 +1,16 @@
 package rbac
 
 //APIModule API所属模块
+//     |-> 2 --> { API权限
+//     |
+// 1 > |-> 3 --> { API权限集合
+//     |
+//     |-> 4 --> { API权限集合
 type APIModule struct {
-	ID   int           // 模块ID
-	APIs []APIResource // 模块含有哪些API
+	ID         int           // 模块ID
+	ModuleName string        // 模块名称
+	ParentID   int           // 父模块ID
+	APIs       []APIResource // 模块含有哪些API
 }
 
 //APIResource API资源定义
